@@ -163,7 +163,7 @@
         }
       }
 
-      return false; // fixme
+      return false;
     },
 
 
@@ -173,11 +173,56 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+
+      // [
+      // [0, 1, 0, 0],
+      // [0, 0, 1, 0],
+      // [0, 0, 0, 0],
+      // [0, 0, 0, 0]
+      // ]
+
+      // [
+      // [0, 0, 0, 0], pCI = 0 -> pCI = 1;
+      // [0, 0, 0, 0],
+      // [0, 0, 0, 0],
+      // [0, 0, 0, 0]
+      // ]
+      var n = this.get('n');
+      var previousColumnIndex;
+      var count = 0;
+
+      for (var i = 0; i < n; i++ ) {
+        //get row using this.get(i) -> i is the rowIndex
+        var row = this.get(i);
+
+        if (previousColumnIndex === undefined) {
+          count += row[majorDiagonalColumnIndexAtFirstRow];
+          previousColumnIndex = majorDiagonalColumnIndexAtFirstRow;
+        } else {
+          count += row[previousColumnIndex + 1];
+          previousColumnIndex++;
+        }
+
+        if (count > 1) {
+          return true;
+        }
+      }
+
+      return false;
     },
+
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
+
+      var n = this.get('n');
+
+      for (var i = 0; i < n; i++) {
+        if (this.hasMajorDiagonalConflictAt(i)) {
+          return true;
+        }
+      }
+
       return false; // fixme
     },
 
