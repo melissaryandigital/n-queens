@@ -16,7 +16,22 @@
 
 
 window.findNRooksSolution = function(n) {
-  var solution = undefined; //fixme
+  var newBoard = new Board({'n': n});
+  var solution = [];
+
+  // If (hasAnyRooksConflicts) is true, toggle same rook
+  for (var i = 0; i < n; i++) {
+    newBoard.togglePiece(i, i);
+
+    if (newBoard.hasAnyRooksConflicts()) {
+      togglePiece(i, i);
+    }
+  }
+  // Iterate through the attributes of newBoard (as long as it's not 'n')
+  // solution.push(row);
+  for (var key in newBoard.rows()) {
+    solution.push(newBoard.get(key));
+  }
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
