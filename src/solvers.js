@@ -40,94 +40,50 @@ window.findNRooksSolution = function (n) {
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function (n) {
   var solutionCount = 0;
+  var newBoard = new Board({ 'n': n });
 
-  // Function creates a new board
-  // Pass in what column to start at for 1st piece
-  // Stop calling when startColumn === n - 1
-
-  var solutionBoard = function (n, startCol) {
-
-
+  var solutionBoard = function (n, currentRow) {
     // Base case
-    // Stop after evaluating last row
     // If rowIndex === n
-    // Increment solutionCount
-    // Return
+    if (currentRow === n) {
+      // Increment solutionCount
+      solutionCount++;
+      return;
+    }
 
     // Work to do
 
-    // LOOP
     // Feed in a row
-    // Iterate through the row
-    // Put the piece down
-    // Call hasAnyRowConflicts
-    // If there is a conflict, toggle the piece off (pick it up)
+    // Iterate through the columns in this row
+    for (var i = 0; i < n; i++) {
+
+      // Put the piece down
+      newBoard.togglePiece(currentRow, i);
+
+      // Call hasAnyRowConflicts
+      if (newBoard.hasAnyRooksConflicts()) {
+        // If there is a conflict, toggle the piece off (pick it up)
+        newBoard.togglePiece(currentRow, i);
+      } else {
+        solutionBoard(n, currentRow + 1);
+        newBoard.togglePiece(currentRow, i);
+      }
+
+    }
+
     // Move to next column and put piece down
 
     // Recursion call with one step closer to base
     // If there are no conflicts, feed in next row
-
-
-
-
-
-
-
-
-
-
-    var startCol = 0 || startCol;
-
-    var newBoard = new Board({ 'n': n });
-
-    // This variable clears every time we create a new board
-    // Store columns we have placed a rook
-    var colPlacements = [];
-
-    // Put a piece down at colStart
-    newBoard.togglePiece(0, startCol);
-    colPlacements.push(startCol);
-
-
-    for (var rowIndex = 1; rowIndex < n; rowIndex++) {
-      var colIndex = 0;
-      // Find a column that does not have a piece down
-      // Place it and move on to the next row
-      // (colPlacement.indexOf(whatValueUrLookingFor) === -1 ) if this is true, the value does not exist in the array
-      // loop through each column (0 to n). once we find a column index that is not in colPlacements, stop the loop.newBoard
-      while (colIndex < n) {
-        if (colPlacements.indexOf(colIndex) === -1) {
-          colPlacements.push(colIndex);
-          // togglePiece (put rook on board) at rowIndex and colIndex
-          newBoard.togglePiece(rowIndex, colIndex);
-          break;
-        }
-      }
-    }
-
-    // if (newBoard.hasAnyRooksConflicts()) {
-    //   togglePiece(rowIndex, i);
-    // }
-    //solutionCount++;
-    startCol++;
-    solutionBoard(n, startCol);
   };
 
-  solutionBoard(n, startCol);
+  solutionBoard(n, 0);
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
 
 
-
-// Start on rowIndex 0  startCol
-
-// Iterate through rowIndex1 and togglepiece on each column, then call hasAnyRooksConflicts until it doesn't have a conflict
-// Move to rowIndex2 and repeat
-// until you get to n - 1
-
-// increment startCol
 
 
 
