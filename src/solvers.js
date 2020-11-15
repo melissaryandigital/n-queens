@@ -127,7 +127,31 @@ window.findNQueensSolution = function (n) {
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function (n) {
-  var solutionCount = undefined; //fixme
+  var newBoard = new Board({ 'n': n });
+  var solutionCount = 0;
+
+
+  var solutionBoard = function (n, currentRowIndex) {
+
+    //base case: when the passed in currentRowIndex equals n (i.e. the row doesn't exist) then we know we've reached the end of the process and found a board that is valid
+    //set the solution equal to the valid board
+    //return solution.
+
+    if (currentRowIndex === n) {
+      solutionCount++;
+      return;
+    }
+
+    for (var i = 0; i < n; i++) {
+      newBoard.togglePiece(currentRowIndex, i);
+      if (!newBoard.hasAnyQueensConflicts()) {
+        solutionBoard(n, currentRowIndex + 1);
+      }
+      newBoard.togglePiece(currentRowIndex, i);
+    }
+  };
+
+  solutionBoard(n, 0);
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
